@@ -107,7 +107,7 @@
 
         let backgroundColor = "";
         if (!background) backgroundColor = 'none';
-        else backgroundColor = colors[color.id];
+        else backgroundColor = colors[background.id];
 
         document.querySelector('#result').innerHTML += '<span style="' + formats[format.id] + 'color: ' + textColor +
             '; background: ' + backgroundColor + '">' + text + '</span>';
