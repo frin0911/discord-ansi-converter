@@ -1,0 +1,19 @@
+label > input[type=radio] {
+    margin-left: 30px;
+}
+
+#result {
+    border-color: #202225;
+    background: #2f3136;
+    width: 80%;
+    min-height: 100px;
+    border-radius: 5px;
+    font-family: Consolas, sans-serif;
+    padding: 10px;
+}
+
+#raw {
+    margin-top: 40px;
+    width: 80%;
+    min-height: 100px;
+}

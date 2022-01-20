@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>디스코드 ANSI 변환기</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="margin-top: 20px">
+        <label>
+            <input type="text" placeholder="텍스트를 입력하세요." size="100">
+        </label>
+        <h3>텍스트 포맷</h3>
+        <label id="text-format">
+            <input type="radio" name="format" id="0">일반
+            <input type="radio" name="format" id="1"><b>볼드</b>
+            <input type="radio" name="format" id="4"><u>밑줄</u>
+        </label>
+
+        <h3>텍스트 색깔</h3>
+        <label id="text-color">
+            <input type="radio" name="color" id="30">회색
+            <input type="radio" name="color" id="31">빨간색
+            <input type="radio" name="color" id="32">초록색
+            <input type="radio" name="color" id="33">노란색
+            <input type="radio" name="color" id="34">파란색
+            <input type="radio" name="color" id="35">분홍색
+            <input type="radio" name="color" id="36">청록색
+            <input type="radio" name="color" id="37">흰색
+        </label>
+
+        <h3>텍스트 배경색</h3>
+        <label id="text-background">
+            <input type="radio" name="background" id="40">군청색
+            <input type="radio" name="background" id="41">주황색
+            <input type="radio" name="background" id="42">회색
+            <input type="radio" name="background" id="43">밝은 회색
+            <input type="radio" name="background" id="44">더 밝은 회색
+            <input type="radio" name="background" id="45">남색
+            <input type="radio" name="background" id="46">흰색과 회색의 어딘가
+            <input type="radio" name="background" id="47">흰색
+        </label>
+
+        <hr>
+        <button id="text-submit" onclick="submit()">적용</button>
+
+        <h3>미리보기(정확하지 않음)</h3>
+        <div id="result"></div>
+
+        <label id="raw">
+            <textarea id="copy" readonly placeholder="여기서 값을 복사하세요"></textarea>
+        </label>
+    </div>
+<script>
+    function submit() {
+        const text = document.querySelector('input[type=text]').value;
+        const format = document.querySelector('input[name=format]:checked');
+        const color = document.querySelector('input[name=color]:checked');
+        const background = document.querySelector('input[name=background]:checked');
+        const rawData = document.querySelector('#copy').value;
+        const formats = {
+            '0': 'font-weight: normal;',
+            '1': 'font-weight: bold;',
+            '4': 'text-decoration: underline;'
+        }
+        const colors = {
+            '0': '#b9bbbe',
+            '30': '#4f545c',
+            '31': '#dc322f',
+            '32': '#859900',
+            '33': '#b58900',
+            '34': '#268bd2',
+            '35': '#d33682',
+            '36': '#2aa198',
+            '37': '#fff',
+            '40': '#002b36',
+            '41': '#cb4c16',
+            '42': '#586e75',
+            '43': '#657b83',
+            '44': '#839496',
+            '45': '#6c71c4',
+            '46': '#93a1a1',
+            '47': '#fdf6e3',
+        }
+
+        if (!format) return alert("포맷을 선택하세요.");
+
+        let result = '[';
+        if (format) result += format.id;
+
+        if (color) result += ';' + color.id;
+
+        if (color && background) result += 'm[' + format.id;
+
+        if (background) {
+            result += ';' + background.id;
+        }
+        result += 'm' + text;
+
+        let textColor = "";
+        if (!color) textColor = '#b9bbbe';
+        else textColor = colors[color.id];
+
+        let backgroundColor = "";
+        if (!background) backgroundColor = 'none';
+        else backgroundColor = colors[color.id];
+
+        document.querySelector('#result').innerHTML += '<span style="' + formats[format.id] + 'color: ' + textColor +
+            '; background: ' + backgroundColor + '">' + text + '</span>';
+
+        let data = ""
+        if (rawData) data = rawData.replace("```ansi\n", "").replace("```", "") + result;
+        else data = result;
+
+        document.querySelector('#copy').value = '```ansi\n' + data + '```';
+    }
+
+</script>
+</body>
+</html>
